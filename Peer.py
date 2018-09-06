@@ -49,19 +49,22 @@ class Peer:
                 'send_address': self.send_address,
                 'add_peer': self.add_peer
             }
-            self.addresses[remote_address] = {
+            full_address = remote_address + str(port)
+            self.addresses[full_address] = {
                 'receiver': Receiver(s, remote_address, callbacks),
                 'socket': s,
                 'port': None
             }
-            self.addresses[remote_address]['receiver'].start()
+            self.addresses[full_address]['receiver'].start()
 
     # Initialise a connection to the socket
     def initialise_connection(self):
         self.local_socket = socket.socket()
         self.local_socket.bind((self.address, self.port))
         self.local_socket.listen(5)
-        self.address_list.append(str(self.address) + ':' + str(self.port))
+        if self.address == 'localhost':
+            self.address = '127.0.0.1'
+        self.address_list.append(self.address + ':' + str(self.port))
 
         self.sender = Sender(self.local_socket, self.addresses)
 
@@ -109,6 +112,9 @@ class Peer:
     def send_address(self, host, port):
         new_address = str(host[0]) + ':' + str(port)
         for address in self.addresses:
+            print('NEW ADDRESS IS BEING SENT...')
+            print(new_address)
+            print('NEW ADDRESS IS SENT')
             if address[0] == host[0] and self.addresses[address]['port'] == port:
                 continue
             self.addresses[address]['socket'].send(('*NEWADDR*:' + new_address).encode())
