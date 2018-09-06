@@ -46,9 +46,10 @@ class Peer:
                 'update_address_list': self.update_address_list,
                 'add_address': self.add_address,
                 'send_address': self.send_address,
-                'add_peer': self.add_peer
+                'add_peer': self.add_peer,
+                'remove_socket': self.remove_socket
             }
-            full_address = remote_address + str(port)
+            full_address = remote_address + ':' + str(port)
             self.addresses[full_address] = {
                 'receiver': Receiver(s, remote_address, callbacks),
                 'socket': s,
@@ -78,7 +79,8 @@ class Peer:
                 'update_address_list': self.update_address_list,
                 'add_address': self.add_address,
                 'send_address': self.send_address,
-                'add_peer': self.add_peer
+                'add_peer': self.add_peer,
+                'remove_socket': self.remove_socket
             }
             self.addresses[addr] = {
                 'receiver': Receiver(c, addr, callbacks),
@@ -117,6 +119,9 @@ class Peer:
             if address[0] == host[0] and self.addresses[address]['port'] == port:
                 continue
             self.addresses[address]['socket'].send(('*NEWADDR*:' + new_address).encode())
+
+    def remove_socket(self, address, port):
+        print(address)
 
 addr = input('Please enter an address:\n')
 port = int(input('Enter port:\n'))

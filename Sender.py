@@ -10,6 +10,10 @@ class Sender(threading.Thread):
     def run(self):
         while True:
             msg = input('Please enter your message:\n')
+            if msg == '*STOP*':
+                for address in self.addresses:
+                    self.addresses[address]['socket'].close()
+                return
             print(self.addresses)
             for address in self.addresses:
                 self.addresses[address]['socket'].send(msg.encode())
