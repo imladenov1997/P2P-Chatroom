@@ -1,6 +1,6 @@
 import pickle
 from pathlib import Path
-from PairGenerator import PairGenerator
+# from PairGenerator import PairGenerator
 import socket
 
 from Receiver import Receiver
@@ -22,10 +22,10 @@ class Peer:
         public_key_file = Path(public_key_path)
         private_key_file = Path(private_key_path)
 
-        if not (public_key_file.is_file() or private_key_file.is_file()):
-            pair_generator = PairGenerator(public_key_path, private_key_path)
-            pair_generator.generate_public_key()
-            pair_generator.generate_private_key()
+        # if not (public_key_file.is_file() or private_key_file.is_file()):
+        #     pair_generator = PairGenerator(public_key_path, private_key_path)
+        #     pair_generator.generate_public_key()
+        #     pair_generator.generate_private_key()
 
         self.public_key_file = Path(public_key_path)
 
