@@ -41,8 +41,7 @@ class Peer:
         if not (remote_address == '' and port == ''):
             s = socket.socket()
             s.connect((remote_address, int(port)))
-            s.send('*PRT*:'.encode())
-            s.send(str(self.port).encode())
+            s.send(('*PRT*:' + str(self.port)).encode())
             callbacks = {
                 'update_address_list': self.update_address_list,
                 'add_address': self.add_address,
